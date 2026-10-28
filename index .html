@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intel 18A: Find Your Match</title>
+    <style>
+        :root {
+            --intel-blue: #0071c5;
+            --ultra-dark: #0b0f19;
+            --core-silver: #f3f4f6;
+            --text-dark: #1f2937;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f0f4f8;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .quiz-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+        .header {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .shared-tech {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--intel-blue), #00c6ff);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        h1 { margin: 10px 0; font-size: 1.8rem; color: #002c5c; }
+        .question { font-size: 1.2rem; font-weight: 600; margin-bottom: 25px; display: none; }
+        .question.active { display: block; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        button.option-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        button.option-btn:hover {
+            border-color: var(--intel-blue);
+            background-color: #f0f7ff;
+        }
+        .result-page { display: none; text-align: left; }
+        .result-page.active { display: block; }
+        .badge {
+            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .badge-ultra { background: #0b0f19; color: #00c6ff; }
+        .badge-core { background: #e5e7eb; color: #002c5c; }
+        .restart-btn {
+            background: var(--intel-blue);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 25px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="header">
+        <span class="shared-tech">Intel 18A Manufacturing Technology Baseline</span>
+        <h1>Processor Matchmaker</h1>
+        <p style="color: #6b7280; font-size: 0.95rem; margin-top: 5px;">Discover your true computing profile</p>
+    </div>
+
+    <!-- Question 1 -->
+    <div class="question active" id="q1">
+        <p>1. What does your primary daily creative/work workflow look like?</p>
+        <div class="options">
+            <button class="option-btn" onclick="nextQuestion('ultra')">Heavy 3D rendering, AAA gaming, or building local AI models.</button>
+            <button class="option-btn" onclick="nextQuestion('core')">Everyday multi-tasking, office apps, and using web-based AI tools.</button>
+        </div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="question" id="q2">
+        <p>2. What is your priority when looking at hardware cost vs capabilities?</p>
+        <div class="options">
+            <button class="option-btn" onclick="nextQuestion('ultra')">Maximum performance headroom. I am willing to invest for elite power.</button>
+            <button class="option-btn" onclick="nextQuestion('core')">Smart budget optimization. I need premium quality at a value-sensitive price.</button>
+        </div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="question" id="q3">
+        <p>3. How intensive are your anticipated on-device AI requirements?</p>
+        <div class="options">
+            <button class="option-btn" onclick="showResult('ultra')">High-demand. Running complex, continuous localized AI models.</button>
+            <button class="option-btn" onclick="showResult('core')">Right-sized. Smart, snappy AI assistance for everyday productivity.</button>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="result-page" id="result-ultra">
+        <div class="badge badge-ultra">YOUR MATCH: Intel Core Ultra Series 3</div>
+        <h2 style="margin-top:0;">Codename: Panther Lake</h2>
+        <p><strong>Why it suits you:</strong> You push computing boundaries. Because you require extreme horsepower for heavy content creation, competitive gaming, and deep local AI computations, the Ultra series gives you the massive processing architecture you need.</p>
+        <p style="font-size: 0.85rem; color:#6b7280;">*Built on the foundation of Intel 18A technology.</p>
+        <button class="restart-btn" onclick="resetQuiz()">Take Test Again</button>
+    </div>
+
+    <div class="result-page" id="result-core">
+        <div class="badge badge-core">YOUR MATCH: Intel Core Series 3</div>
+        <h2 style="margin-top:0;">Codename: Wildcat Lake</h2>
+        <p><strong>Why it suits you:</strong> You value smart, reliable, modern computing. The Core Series 3 delivers snappy performance, all-day agility, and right-sized AI smarts without breaking your budget. It's the perfect premium baseline for price-conscious shoppers.</p>
+        <p style="font-size: 0.85rem; color:#6b7280;">*Built on the foundation of Intel 18A technology.</p>
+        <button class="restart-btn" onclick="resetQuiz()">Take Test Again</button>
+    </div>
+</div>
+
+<script>
+    let scores = { ultra: 0, core: 0 };
+    let currentStep = 1;
+
+    function nextQuestion(type) {
+        scores[type]++;
+        document.getElementById(`q${currentStep}`).classList.remove('active');
+        currentStep++;
+        document.getElementById(`q${currentStep}`).classList.add('active');
+    }
+
+    function showResult(type) {
+        scores[type]++;
+        document.getElementById(`q${currentStep}`).classList.remove('active');
+        
+        let finalMatch = scores.ultra >= scores.core ? 'ultra' : 'core';
+        document.getElementById(`result-${finalMatch}`).classList.add('active');
+    }
+
+    function resetQuiz() {
+        scores = { ultra: 0, core: 0 };
+        currentStep = 1;
+        document.querySelectorAll('.result-page').forEach(el => el.classList.remove('active'));
+        document.getElementById('q1').classList.add('active');
+    }
+</script>
+</body>
+</html>
