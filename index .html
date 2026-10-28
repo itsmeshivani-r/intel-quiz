@@ -1,126 +1,317 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intel 18A Matchmaker</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #f0f4f8;
-            color: #1f2937;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 80vh;
-        }
-        .container {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            background: #0071c5;
-            color: white;
-            padding: 12px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: left;
-        }
-        .btn:hover { background: #00599a; }
-        .hidden { display: none; }
-        .badge {
-            display: inline-block;
-            padding: 6px 12px;
-            background: #0071c5;
-            color: white;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Same Roots, Different Missions</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #080d18;
+    color: white;
+}
+
+header {
+    text-align: center;
+    padding: 45px 18px 25px;
+}
+
+.tag {
+    color: #36baff;
+    letter-spacing: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: clamp(30px, 7vw, 48px);
+    margin: 18px 0;
+}
+
+h1 span {
+    color: #36baff;
+}
+
+header p {
+    color: #b8c5d9;
+    line-height: 1.7;
+    max-width: 600px;
+    margin: auto;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.shared {
+    border: 1px solid #25364e;
+    background: #111c2e;
+    border-radius: 15px;
+    padding: 22px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.shared h2 {
+    color: #36baff;
+    margin-top: 0;
+}
+
+.traits {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.trait {
+    border: 1px solid #36506c;
+    border-radius: 25px;
+    padding: 9px 14px;
+    font-size: 13px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: #111c2e;
+    border: 1px solid #2a3d58;
+    border-radius: 16px;
+    padding: 23px;
+    text-align: center;
+}
+
+.symbol {
+    width: 90px;
+    height: 90px;
+    margin: 5px auto 18px;
+    border: 2px solid #36baff;
+    border-radius: 25px;
+    display: grid;
+    place-items: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #36baff;
+    background: #0b2942;
+}
+
+.bolt .symbol {
+    color: #ffbd59;
+    border-color: #ffbd59;
+    background: #392817;
+    border-radius: 50%;
+}
+
+.card h2 {
+    margin: 8px 0;
+}
+
+.role {
+    color: #36baff;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.bolt .role {
+    color: #ffbd59;
+}
+
+.card p {
+    color: #c0ccdc;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #168bd0;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.bolt button {
+    background: #bd791c;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+
+.details {
+    display: none;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #080d18;
+    color: #d9e5f5;
+    font-size: 14px;
+    line-height: 1.7;
+    text-align: left;
+}
+
+.conclusion {
+    text-align: center;
+    padding: 35px 10px;
+    color: #c0ccdc;
+    line-height: 1.8;
+}
+
+.conclusion strong {
+    color: #36baff;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #75849b;
+    font-size: 12px;
+}
+
+@media (max-width: 560px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        padding-top: 35px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-    <div style="border-bottom: 2px solid #e5e7eb; padding-bottom: 15px; margin-bottom: 20px;">
-        <span class="badge">Intel 18A Manufacturing Technology Baseline</span>
-        <h2 style="margin: 5px 0; color: #002c5c;">Processor Matchmaker</h2>
-    </div>
+<header>
+    <div class="tag">INTEL HACKATHON CONCEPT</div>
 
-    <!-- Q1 -->
-    <div id="q1">
-        <p style="font-size: 18px; font-weight: bold;">1. What does your primary daily creative/work workflow look like?</p>
-        <button class="btn" onclick="next('ultra')">A) Heavy 3D rendering, AAA gaming, or localized AI building.</button>
-        <button class="btn" onclick="next('core')">B) Everyday multi-tasking, office apps, and web-based AI tools.</button>
-    </div>
+    <h1>SAME ROOTS.<br>
+    <span>DIFFERENT MISSIONS.</span></h1>
 
-    <!-- Q2 -->
-    <div id="q2" class="hidden">
-        <p style="font-size: 18px; font-weight: bold;">2. What is your priority when looking at cost vs capabilities?</p>
-        <button class="btn" onclick="next('ultra')">A) Maximum performance headroom. Willing to invest for elite power.</button>
-        <button class="btn" onclick="next('core')">B) Smart budget optimization. Premium quality at a value price.</button>
-    </div>
+    <p>
+        Two characters. One shared purpose.
+        Different ways to turn challenges into solutions.
+    </p>
+</header>
 
-    <!-- Q3 -->
-    <div id="q3" class="hidden">
-        <p style="font-size: 18px; font-weight: bold;">3. How intensive are your anticipated on-device AI requirements?</p>
-        <button class="btn" onclick="done('ultra')">A) High-demand. Running complex, continuous local models.</button>
-        <button class="btn" onclick="done('core')">B) Right-sized. Smart, snappy AI assistance for everyday tasks.</button>
-    </div>
+<main class="container">
 
-    <!-- Result Ultra -->
-    <div id="res-ultra" class="hidden" style="text-align: left;">
-        <div style="background: #0b0f19; color: #00c6ff; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center;">YOUR MATCH: Intel Core Ultra Series 3</div>
-        <h3>Codename: Panther Lake</h3>
-        <p>You push computing boundaries! Because you require extreme horsepower for heavy content creation, competitive gaming, and deep local AI computations, the Ultra series gives you the massive processing architecture you need.</p>
-        <button class="btn" style="text-align:center;" onclick="restart()">Take Test Again</button>
-    </div>
+    <section class="shared">
+        <h2>What connects them?</h2>
 
-    <!-- Result Core -->
-    <div id="res-core" class="hidden" style="text-align: left;">
-        <div style="background: #e5e7eb; color: #002c5c; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center;">YOUR MATCH: Intel Core Series 3</div>
-        <h3>Codename: Wildcat Lake</h3>
-        <p>You value smart, reliable, modern computing. The Core Series 3 delivers snappy performance, all-day agility, and right-sized AI smarts without breaking your budget. It's the perfect premium baseline for price-conscious shoppers.</p>
-        <button class="btn" style="text-align:center;" onclick="restart()">Take Test Again</button>
-    </div>
-</div>
+        <p>Both characters share these core characteristics:</p>
+
+        <div class="traits">
+            <span class="trait">Problem-solving</span>
+            <span class="trait">Curiosity</span>
+            <span class="trait">Adaptability</span>
+            <span class="trait">Innovation</span>
+        </div>
+    </section>
+
+    <section class="cards">
+
+        <article class="card nova">
+            <div class="symbol">N</div>
+
+            <h2>NOVA</h2>
+            <div class="role">THE STRATEGIST</div>
+
+            <p>
+                Nova studies information, identifies patterns,
+                predicts problems and creates the best plan.
+            </p>
+
+            <button onclick="showDetails('nova-details', this)">
+                Explore Nova
+            </button>
+
+            <div class="details" id="nova-details">
+                <strong>Mission: Think and plan</strong><br>
+                1. Collects information<br>
+                2. Analyzes possible solutions<br>
+                3. Predicts risks<br>
+                4. Recommends the best action
+            </div>
+        </article>
+
+        <article class="card bolt">
+            <div class="symbol">B</div>
+
+            <h2>BOLT</h2>
+            <div class="role">THE BUILDER</div>
+
+            <p>
+                Bolt uses tools, transforms plans into action,
+                builds solutions and tests the results.
+            </p>
+
+            <button onclick="showDetails('bolt-details', this)">
+                Explore Bolt
+            </button>
+
+            <div class="details" id="bolt-details">
+                <strong>Mission: Build and act</strong><br>
+                1. Receives a plan<br>
+                2. Chooses the right tools<br>
+                3. Builds the solution<br>
+                4. Tests and improves the result
+            </div>
+        </article>
+
+    </section>
+
+    <section class="conclusion">
+        <h2>Different Roles. One Goal.</h2>
+
+        <p>
+            Nova figures out <strong>what to do</strong>.<br>
+            Bolt focuses on <strong>how to do it</strong>.<br><br>
+
+            Together, they show how different abilities
+            can work toward the same goal.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    Student concept project | Same Roots, Different Missions
+</footer>
 
 <script>
-    var u = 0, c = 0, step = 1;
-    function next(type) {
-        if(type === 'ultra') u++; else c++;
-        document.getElementById('q' + step).classList.add('hidden');
-        step++;
-        document.getElementById('q' + step).classList.remove('hidden');
+function showDetails(id, button) {
+    var details = document.getElementById(id);
+
+    if (details.style.display === "block") {
+        details.style.display = "none";
+        button.textContent = id === "nova-details"
+            ? "Explore Nova"
+            : "Explore Bolt";
+    } else {
+        details.style.display = "block";
+        button.textContent = "Show Less";
     }
-    function done(type) {
-        if(type === 'ultra') u++; else c++;
-        document.getElementById('q3').classList.add('hidden');
-        if(u >= c) {
-            document.getElementById('res-ultra').classList.remove('hidden');
-        } else {
-            document.getElementById('res-core').classList.remove('hidden');
-        }
-    }
-    function restart() {
-        u = 0; c = 0; step = 1;
-        document.getElementById('res-ultra').classList.add('hidden');
-        document.getElementById('res-core').classList.add('hidden');
-        document.getElementById('q1').classList.remove('hidden');
-    }
+}
 </script>
+
 </body>
 </html>
